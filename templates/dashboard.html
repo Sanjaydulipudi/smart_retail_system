@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Smart Retail System{% endblock %}
+
+{% block extra_head %}
+<style>
+    .metric-card {
+        transition: transform 0.3s ease;
+    }
+    .metric-card:hover {
+        transform: translateY(-5px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <h1 class="text-2xl font-bold mb-2">Analytics Dashboard</h1>
+    <p class="text-gray-600">View key performance metrics and insights for your retail business.</p>
+</div>
+
+<!-- Key Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+    <!-- Total Sales -->
+    <div class="bg-white rounded-lg shadow-md p-6 metric-card">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="font-medium text-gray-500">Total Sales</h3>
+            <div class="bg-blue-100 rounded-full p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </div>
+        <p class="text-2xl font-bold">{{ summary.total_sales }}</p>
+    </div>
+    
+    <!-- Average Daily Sales -->
+    <div class="bg-white rounded-lg shadow-md p-6 metric-card">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="font-medium text-gray-500">Avg. Daily Sales</h3>
+            <div class="bg-green-100 rounded-full p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+            </div>
+        </div>
+        <p class="text-2xl font-bold">{{ summary.avg_daily_sales }}</p>
+    </div>
+    
+    <!-- Sales Growth -->
+    <div class="bg-white rounded-lg shadow-md p-6 metric-card">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="font-medium text-gray-500">Sales Growth</h3>
+            <div class="bg-purple-100 rounded-full p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+            </div>
+        </div>
+        <p class="text-2xl font-bold">{{ summary.sales_growth }}</p>
+    </div>
+    
+    <!-- Data Period -->
+    <div class="bg-white rounded-lg shadow-md p-6 metric-card">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="font-medium text-gray-500">Data Period</h3>
+            <div class="bg-yellow-100 rounded-full p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            </div>
+        </div>
+        <p class="text-lg font-bold">{{ summary.data_period }}</p>
+    </div>
+    
+    <!-- Record Count -->
+    <div class="bg-white rounded-lg shadow-md p-6 metric-card">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="font-medium text-gray-500">Total Records</h3>
+            <div class="bg-red-100 rounded-full p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+            </div>
+        </div>
+        <p class="text-2xl font-bold">{{ summary.record_count }}</p>
+    </div>
+</div>
+
+<!-- Charts & Reports -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Sales Trend Chart -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-bold mb-4">Sales Trend</h2>
+        <div class="aspect-w-16 aspect-h-9">
+            {% if reports.sales_trend %}
+            <img src="{{ url_for('static', filename=reports.sales_trend) }}" alt="Sales Trend" class="w-full h-auto">
+            {% else %}
+            <div class="w-full h-64 flex items-center justify-center bg-gray-100 rounded-lg">
+                <p class="text-gray-500">No data available</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Category Analysis -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-bold mb-4">Category Analysis</h2>
+        <div class="aspect-w-16 aspect-h-9">
+            {% if reports.category_analysis %}
+            <img src="{{ url_for('static', filename=reports.category_analysis) }}" alt="Category Analysis" class="w-full h-auto">
+            {% else %}
+            <div class="w-full h-64 flex items-center justify-center bg-gray-100 rounded-lg">
+                <p class="text-gray-500">No data available</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Sales Forecast -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-bold mb-4">Sales Forecast</h2>
+        <div class="aspect-w-16 aspect-h-9">
+            {% if reports.sales_forecast %}
+            <img src="{{ url_for('static', filename=reports.sales_forecast) }}" alt="Sales Forecast" class="w-full h-auto">
+            {% else %}
+            <div class="w-full h-64 flex items-center justify-center bg-gray-100 rounded-lg">
+                <p class="text-gray-500">No data available</p>
+            </div>
+            {% endif %}
+        </div>
+        <div class="mt-4">
+            <a href="{{ url_for('predict') }}" class="text-blue-700 hover:underline flex items-center">
+                <span>View detailed forecast</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Performance Metrics -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-bold mb-4">Model Performance</h2>
+        <div class="aspect-w-16 aspect-h-9">
+            {% if reports.performance_metrics %}
+            <img src="{{ url_for('static', filename=reports.performance_metrics) }}" alt="Performance Metrics" class="w-full h-auto">
+            {% else %}
+            <div class="w-full h-64 flex items-center justify-center bg-gray-100 rounded-lg">
+                <p class="text-gray-500">No data available</p>
+            </div>
+            {% endif %}
+        </div>
+        <div class="mt-4">
+            <a href="{{ url_for('train_model') }}" class="text-blue-700 hover:underline flex items-center">
+                <span>Train new model</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Latest Data -->
+<div class="mt-8 bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-lg font-bold mb-4">Latest Data</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white" id="latest-data-table">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="py-2 px-4 text-left">Date</th>
+                    <th class="py-2 px-4 text-left">Sales</th>
+                    <th class="py-2 px-4 text-left">Category</th>
+                    <th class="py-2 px-4 text-left">Units</th>
+                    <th class="py-2 px-4 text-left">Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="py-2 px-4 border-t" colspan="5">
+                        <div class="flex justify-center">
+                            <div class="animate-pulse text-gray-500">Loading latest data...</div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Fetch latest data on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/data/latest')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const tableBody = document.querySelector('#latest-data-table tbody');
+                    tableBody.innerHTML = '';
+
+                    if (data.data.length === 0) {
+                        tableBody.innerHTML = `
+                            <tr>
+                                <td class="py-2 px-4 border-t" colspan="5">
+                                    <div class="flex justify-center">
+                                        <div class="text-gray-500">No data available</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    data.data.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="py-2 px-4 border-t">${item.date}</td>
+                            <td class="py-2 px-4 border-t">${item.sales}</td>
+                            <td class="py-2 px-4 border-t">${item.category || 'N/A'}</td>
+                            <td class="py-2 px-4 border-t">${item.units || 'N/A'}</td>
+                            <td class="py-2 px-4 border-t">$${item.revenue ? parseFloat(item.revenue).toFixed(2) : 'N/A'}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    console.error('Error fetching data:', data.error);
+                    const tableBody = document.querySelector('#latest-data-table tbody');
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td class="py-2 px-4 border-t" colspan="5">
+                                <div class="flex justify-center">
+                                    <div class="text-red-500">Error loading data</div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+{% endblock %}

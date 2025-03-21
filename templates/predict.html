@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Sales Prediction - Smart Retail System{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <h1 class="text-2xl font-bold mb-2">Sales Prediction</h1>
+    <p class="text-gray-600">Generate forecasts for future sales based on historical data.</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Prediction Form -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-bold mb-4">Configure Forecast</h2>
+        <form method="POST" action="{{ url_for('predict') }}">
+            <div class="mb-4">
+                <label for="prediction_days" class="block text-gray-700 font-medium mb-2">
+                    Forecast Period (days)
+                </label>
+                <input type="number" id="prediction_days" name="prediction_days" min="1" max="365" value="{{ prediction_days|default(30) }}" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            
+            <div class="mb-4">
+                <label for="model_type" class="block text-gray-700 font-medium mb-2">
+                    Model Type
+                </label>
+                <select id="model_type" name="model_type" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="ffn">Feedforward Neural Network</option>
+                    <option value="lstm">LSTM</option>
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label for="confidence_interval" class="block text-gray-700 font-medium mb-2">
+                    Confidence Interval
+                </label>
+                <select id="confidence_interval" name="confidence_interval" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="0.95">95%</option>
+                    <option value="0.90">90%</option>
+                    <option value="0.80">80%</option>
+                </select>
+            </div>
+            
+            <div class="mt-6">
+                <button type="submit" class="w-full bg-blue-700 text-white font-medium py-2 px-4 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Generate Forecast
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Forecast Visualization -->
+    <div class="bg-white rounded-lg shadow-md p-6 col-span-1 lg:col-span-2">
+        <h2 class="text-lg font-bold mb-4">Forecast Results</h2>
+        {% if forecast_image %}
+        <div class="aspect-w-16 aspect-h-9">
+            <img src="{{ url_for('static', filename='reports/' + forecast_image) }}" alt="Sales Forecast" class="w-full h-auto rounded-lg">
+        </div>
+        <div class="mt-4 text-center text-sm text-gray-600">
+            Sales forecast for the next {{ prediction_days }} days using {{ model_type|upper if model_type else 'default' }} model
+        </div>
+        {% else %}
+        <div class="flex items-center justify-center h-64 bg-gray-100 rounded-lg">
+            <div class="text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <p class="mt-2 text-gray-500">Configure and generate a forecast to see the results</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Advanced Options -->
+<div class="mt-8 bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-lg font-bold mb-4">Advanced Analysis</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Validation Metrics -->
+        <div>
+            <h3 class="font-bold text-gray-700 mb-2">Model Validation Metrics</h3>
+            {% if metrics %}
+            <table class="min-w-full bg-white">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="py-2 px-4 text-left">Metric</th>
+                        <th class="py-2 px-4 text-left">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="py-2 px-4 border-t">MAE</td>
+                        <td class="py-2 px-4 border-t">{{ metrics.mae|default('N/A') }}</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-4 border-t">RMSE</td>
+                        <td class="py-2 px-4 border-t">{{ metrics.rmse|default('N/A') }}</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-4 border-t">R²</td>
+                        <td class="py-2 px-4 border-t">{{ metrics.r_squared|default('N/A') }}</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-4 border-t">MAPE</td>
+                        <td class="py-2 px-4 border-t">{{ metrics.mape|default('N/A') }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% else %}
+            <div class="flex items-center justify-center h-40 bg-gray-100 rounded-lg">
+                <p class="text-gray-500">No validation metrics available</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Feature Importance -->
+        <div>
+            <h3 class="font-bold text-gray-700 mb-2">Feature Importance</h3>
+            {% if feature_importance %}
+            <div class="aspect-w-16 aspect-h-9">
+                <img src="{{ url_for('static', filename=feature_importance) }}" alt="Feature Importance" class="w-full h-auto rounded-lg">
+            </div>
+            {% else %}
+            <div class="flex items-center justify-center h-40 bg-gray-100 rounded-lg">
+                <p class="text-gray-500">No feature importance data available</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="mt-6">
+        <h3 class="font-bold text-gray-700 mb-2">Custom Prediction</h3>
+        <p class="text-gray-600 mb-4">Use the API to make custom predictions with specific features.</p>
+        <div class="bg-gray-100 p-4 rounded-lg">
+            <code class="text-sm font-mono">
+POST /api/predict<br>
+Content-Type: application/json<br><br>
+{<br>
+&nbsp;&nbsp;"day_of_week": 1,<br>
+&nbsp;&nbsp;"month": 3,<br>
+&nbsp;&nbsp;"is_holiday": false,<br>
+&nbsp;&nbsp;"promotion_active": true<br>
+}
+            </code>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Highlight current model type based on the last prediction
+    document.addEventListener('DOMContentLoaded', function() {
+        if ("{{ model_type }}") {
+            document.getElementById('model_type').value = "{{ model_type }}";
+        }
+        
+        if ("{{ confidence_interval }}") {
+            document.getElementById('confidence_interval').value = "{{ confidence_interval }}";
+        }
+    });
+</script>
+{% endblock %}

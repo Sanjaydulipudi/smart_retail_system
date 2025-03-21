@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Smart Retail System{% endblock %}</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="bg-blue-800 text-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="{{ url_for('home') }}" class="text-xl font-bold">Smart Retail System</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="{{ url_for('home') }}" class="px-3 py-2 rounded hover:bg-blue-700">Home</a>
+                    <a href="{{ url_for('dashboard') }}" class="px-3 py-2 rounded hover:bg-blue-700">Dashboard</a>
+                    <a href="{{ url_for('predict') }}" class="px-3 py-2 rounded hover:bg-blue-700">Predict</a>
+                    <a href="{{ url_for('reports') }}" class="px-3 py-2 rounded hover:bg-blue-700">Reports</a>
+                    <a href="{{ url_for('upload_data') }}" class="px-3 py-2 rounded hover:bg-blue-700">Upload Data</a>
+                    <a href="{{ url_for('train_model') }}" class="px-3 py-2 rounded hover:bg-blue-700">Train Model</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="{{ url_for('home') }}" class="block px-3 py-2 rounded hover:bg-blue-700">Home</a>
+                <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 rounded hover:bg-blue-700">Dashboard</a>
+                <a href="{{ url_for('predict') }}" class="block px-3 py-2 rounded hover:bg-blue-700">Predict</a>
+                <a href="{{ url_for('reports') }}" class="block px-3 py-2 rounded hover:bg-blue-700">Reports</a>
+                <a href="{{ url_for('upload_data') }}" class="block px-3 py-2 rounded hover:bg-blue-700">Upload Data</a>
+                <a href="{{ url_for('train_model') }}" class="block px-3 py-2 rounded hover:bg-blue-700">Train Model</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mx-auto px-4 mt-4">
+                {% for category, message in messages %}
+                    <div class="{% if category == 'error' %}bg-red-100 border-red-400 text-red-700{% else %}bg-green-100 border-green-400 text-green-700{% endif %} px-4 py-3 rounded relative border mb-4" role="alert">
+                        <span class="block sm:inline">{{ message }}</span>
+                        <button type="button" class="absolute top-0 right-0 px-4 py-3 close-alert">
+                            <svg class="fill-current h-6 w-6" role="button" viewBox="0 0 20 20"><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6 flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-800 text-white py-4 mt-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p>&copy; 2025 Smart Retail System</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-blue-300">About</a>
+                    <a href="#" class="hover:text-blue-300">Documentation</a>
+                    <a href="#" class="hover:text-blue-300">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Close alert messages
+        document.querySelectorAll('.close-alert').forEach(button => {
+            button.addEventListener('click', function() {
+                this.parentElement.remove();
+            });
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Smart Retail System{% endblock %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <!-- Hero Section -->
+    <div class="bg-blue-700 text-white p-8">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-6 md:mb-0">
+                <h1 class="text-3xl font-bold mb-4">Smart Retail Business Intelligence</h1>
+                <p class="text-xl mb-6">Leverage the power of data analytics and machine learning to optimize your retail business.</p>
+                <a href="{{ url_for('dashboard') }}" class="bg-white text-blue-700 font-bold py-2 px-4 rounded-lg hover:bg-blue-100 transition duration-300">
+                    Explore Dashboard
+                </a>
+            </div>
+            <div class="md:w-1/2">
+                <img src="{{ url_for('static', filename='images/analytics.svg') }}" alt="Analytics" class="w-full">
+            </div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="p-8">
+        <h2 class="text-2xl font-bold mb-6 text-center">Key Features</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Feature 1 -->
+            <div class="bg-blue-50 p-6 rounded-lg">
+                <div class="text-blue-700 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Sales Analytics</h3>
+                <p class="text-gray-700">Track and visualize your sales performance over time with interactive charts and detailed analysis.</p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="bg-blue-50 p-6 rounded-lg">
+                <div class="text-blue-700 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Demand Prediction</h3>
+                <p class="text-gray-700">Leverage machine learning to forecast future sales and optimize your inventory management.</p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="bg-blue-50 p-6 rounded-lg">
+                <div class="text-blue-700 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Automated Reporting</h3>
+                <p class="text-gray-700">Generate custom reports with key insights to make data-driven business decisions.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Getting Started -->
+    <div class="bg-gray-50 p-8">
+        <h2 class="text-2xl font-bold mb-6 text-center">Getting Started</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <!-- Step 1 -->
+            <div class="bg-white p-4 rounded shadow-sm flex flex-col items-center">
+                <div class="rounded-full bg-blue-100 text-blue-700 w-10 h-10 flex items-center justify-center font-bold text-lg mb-3">1</div>
+                <h3 class="font-bold text-center mb-2">Upload Data</h3>
+                <p class="text-center text-sm text-gray-600">Import your sales data from CSV files</p>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="bg-white p-4 rounded shadow-sm flex flex-col items-center">
+                <div class="rounded-full bg-blue-100 text-blue-700 w-10 h-10 flex items-center justify-center font-bold text-lg mb-3">2</div>
+                <h3 class="font-bold text-center mb-2">Train Models</h3>
+                <p class="text-center text-sm text-gray-600">Create prediction models with your data</p>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="bg-white p-4 rounded shadow-sm flex flex-col items-center">
+                <div class="rounded-full bg-blue-100 text-blue-700 w-10 h-10 flex items-center justify-center font-bold text-lg mb-3">3</div>
+                <h3 class="font-bold text-center mb-2">Analyze Trends</h3>
+                <p class="text-center text-sm text-gray-600">Explore interactive dashboards and reports</p>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="bg-white p-4 rounded shadow-sm flex flex-col items-center">
+                <div class="rounded-full bg-blue-100 text-blue-700 w-10 h-10 flex items-center justify-center font-bold text-lg mb-3">4</div>
+                <h3 class="font-bold text-center mb-2">Make Decisions</h3>
+                <p class="text-center text-sm text-gray-600">Use insights to optimize your retail business</p>
+            </div>
+        </div>
+        
+        <div class="mt-8 text-center">
+            <a href="{{ url_for('upload_data') }}" class="bg-blue-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-800 transition duration-300">
+                Start Now
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

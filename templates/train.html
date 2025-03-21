@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Train Model{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Train Sales Prediction Model</h1>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    {% if success %}
+        <div class="alert alert-success">
+            <h4>Model Trained Successfully!</h4>
+            <p>Your model has been trained and is ready for predictions.</p>
+        </div>
+        
+        {% if metrics %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Model Performance Metrics</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Model Type</th>
+                            <td>{{ metrics.model_type }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mean Squared Error (MSE)</th>
+                            <td>{{ metrics.mse|round(4) }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mean Absolute Error (MAE)</th>
+                            <td>{{ metrics.mae|round(4) }}</td>
+                        </tr>
+                        <tr>
+                            <th>R² Score</th>
+                            <td>{{ metrics.r2|round(4) }}</td>
+                        </tr>
+                        <tr>
+                            <th>Feature Count</th>
+                            <td>{{ metrics.feature_count }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+        
+        {% if perf_report %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Performance Report</h3>
+                </div>
+                <div class="card-body">
+                    <img src="{{ url_for('static', filename='reports/' + perf_report) }}" 
+                         alt="Performance Report" class="img-fluid">
+                </div>
+            </div>
+        {% endif %}
+        
+        <a href="{{ url_for('predict') }}" class="btn btn-primary">Make Predictions</a>
+    {% else %}
+        <div class="card">
+            <div class="card-header">
+                <h3>Train a New Model</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('train_model') }}">
+                    <div class="form-group mb-4">
+                        <label for="model_type">Select Model Type:</label>
+                        <select class="form-control" id="model_type" name="model_type">
+                            <option value="linear">Linear Regression</option>
+                            <option value="rf">Random Forest</option>
+                            <option value="time_series">Time Series Model</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Train Model</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

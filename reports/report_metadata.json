@@ -1,0 +1,13 @@
+{
+    "generated_at": "2025-03-16 19:11:06",
+    "reports": {
+        "sales_trend": "sales_trend.png",
+        "category_analysis": "category_analysis.png",
+        "weekly_pattern": "weekly_pattern.png",
+        "sales_forecast": "sales_forecast_ffn_30days_95pct.png",
+        "performance_metrics_ffn": null,
+        "performance_metrics_lstm": null,
+        "feature_importance_ffn": "feature_importance_ffn.png",
+        "feature_importance_lstm": "feature_importance_lstm.png"
+    }
+}
