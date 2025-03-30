@@ -22,7 +22,7 @@ class Config:
     PROCESSED_DATA_PATH = os.path.join('data', 'processed_sales.csv')
     
     # Reporting settings
-    REPORTS_DIR = 'reports'
+    REPORTS_DIR = 'static/reports/'
     
     # Debug settings
     DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 't')

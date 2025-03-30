@@ -129,7 +129,8 @@ def predict():
                         metrics = json.load(f)
                 
                 # Check for feature importance
-                fi_path = os.path.join(app.config.get('REPORTS_DIR'), f"feature_importance_{model_type}.png")
+                # fi_path = os.path.join(app.config.get('REPORTS_DIR'), f"feature_importance_{model_type}.png")
+                fi_path = os.path.join('/static/reports/', f"feature_importance_{model_type}.png")
                 if os.path.exists(fi_path):
                     feature_importance = os.path.join('reports', os.path.basename(fi_path))
             except Exception as e:
@@ -290,7 +291,7 @@ def api_predict():
         
         # Make prediction
         prediction = MODEL.predict(features)
-        
+        print('predictions:',prediction)
         return jsonify({
             'success': True, 
             'prediction': float(prediction[0])

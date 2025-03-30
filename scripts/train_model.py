@@ -136,6 +136,7 @@ class SalesPredictionModel:
             history['val_loss'] = [mean_squared_error(y_test, y_test_pred)]
             history['train_mae'] = [mean_absolute_error(y_train, y_train_pred)]
             history['val_mae'] = [mean_absolute_error(y_test, y_test_pred)]
+            print('model trainined successful')
             
         elif model_type == 'rf':
             # Build and train random forest
@@ -215,45 +216,45 @@ class SalesPredictionModel:
             self.metrics['feature_importance'] = feature_importance
         
         # Save metrics
-        with open(os.path.join(os.path.dirname(self.model_path), 'model_metadata.json'), 'w') as f:
-            json.dump(self.metrics, f, indent=4)
+        # with open(os.path.join(os.path.dirname(self.model_path), 'model_metadata.json'), 'w') as f:
+        #     json.dump(self.metrics, f, indent=4)
             
         # Plot training history
-        plt.figure(figsize=(12, 5))
-        plt.subplot(1, 2, 1)
-        plt.plot(history['train_loss'], label='Training Loss')
-        plt.plot(history['val_loss'], label='Validation Loss')
-        plt.title('Model Loss')
-        plt.xlabel('Epoch')
-        plt.ylabel('Loss (MSE)')
-        plt.legend()
+        # plt.figure(figsize=(12, 5))
+        # plt.subplot(1, 2, 1)
+        # plt.plot(history['train_loss'], label='Training Loss')
+        # plt.plot(history['val_loss'], label='Validation Loss')
+        # plt.title('Model Loss')
+        # plt.xlabel('Epoch')
+        # plt.ylabel('Loss (MSE)')
+        # plt.legend()
         
-        plt.subplot(1, 2, 2)
-        plt.plot(history['train_mae'], label='Training MAE')
-        plt.plot(history['val_mae'], label='Validation MAE')
-        plt.title('Model Mean Absolute Error')
-        plt.xlabel('Epoch')
-        plt.ylabel('MAE')
-        plt.legend()
+        # plt.subplot(1, 2, 2)
+        # plt.plot(history['train_mae'], label='Training MAE')
+        # plt.plot(history['val_mae'], label='Validation MAE')
+        # plt.title('Model Mean Absolute Error')
+        # plt.xlabel('Epoch')
+        # plt.ylabel('MAE')
+        # plt.legend()
         
         # Save the plot
-        os.makedirs(self.config.REPORTS_DIR, exist_ok=True)
-        plt.savefig(os.path.join(self.config.REPORTS_DIR, 'model_training_history.png'))
+        # os.makedirs(self.config.REPORTS_DIR, exist_ok=True)
+        # plt.savefig(os.path.join(self.config.REPORTS_DIR, 'model_training_history.png'))
         
-        # Plot feature importance if available
-        if model_type in ['rf', 'time_series'] and model_type != 'time_series':
-            plt.figure(figsize=(10, 8))
-            features = np.array(feature_names)
-            importances = self.model.feature_importances_
-            indices = np.argsort(importances)[::-1]
+        # # Plot feature importance if available
+        # if model_type in ['rf', 'time_series'] and model_type != 'time_series':
+        #     plt.figure(figsize=(10, 8))
+        #     features = np.array(feature_names)
+        #     importances = self.model.feature_importances_
+        #     indices = np.argsort(importances)[::-1]
             
-            plt.title('Feature Importance')
-            plt.bar(range(len(indices)), importances[indices], color='b', align='center')
-            plt.xticks(range(len(indices)), features[indices], rotation=90)
-            plt.tight_layout()
-            plt.savefig(os.path.join(self.config.REPORTS_DIR, f'feature_importance_{model_type}.png'))
+        #     plt.title('Feature Importance')
+        #     plt.bar(range(len(indices)), importances[indices], color='b', align='center')
+        #     plt.xticks(range(len(indices)), features[indices], rotation=90)
+        #     plt.tight_layout()
+        #     plt.savefig(os.path.join(self.config.REPORTS_DIR, f'feature_importance_{model_type}.png'))
         
-        logger.info(f"Model training completed. Type: {model_type}, MAE: {self.metrics['mae']:.2f}")
+        # logger.info(f"Model training completed. Type: {model_type}, MAE: {self.metrics['mae']:.2f}")
         return self.metrics
     
     def predict(self, features):
